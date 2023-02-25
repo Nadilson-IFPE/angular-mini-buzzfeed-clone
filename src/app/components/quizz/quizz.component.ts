@@ -50,8 +50,26 @@ export class QuizzComponent implements OnInit {
     if (this.questionMaxIndex > this.questionIndex) {
       this.questionSelected = this.questions[this.questionIndex]
     } else {
+      const finalAnswer: string = await this.checkResult(this.answers)
       this.finished = true
+      this.answerSelected = quizz_questions.results[finalAnswer as keyof typeof quizz_questions.results]
     }
+  }
+
+  async checkResult(anwsers: string[]) {
+
+    const result = anwsers.reduce((previous, current, i, arr) => {
+      if (
+        arr.filter(item => item === previous).length >
+        arr.filter(item => item === current).length
+      ) {
+        return previous
+      } else {
+        return current
+      }
+    })
+
+    return result
   }
 
 }
